@@ -4,9 +4,12 @@ import math
 import numpy as np
 import operator
 import sys
+from termcolor import cprint
 #import ThreeDObject
 
-print "syst.arv => %s" % sys.argv
+sprint = lambda x : cprint('\t' + x, 'magenta')#, attrs=['bold'])
+rprint = lambda x : cprint('\t\t' + x, 'red')
+sprint("syst.arv => %s" % sys.argv)
 
 
 class ThreeDObject:
@@ -24,17 +27,15 @@ class ThreeDObject:
 
         with open(filepath) as f:
             content = f.readlines()
-
-        #print "content => %s" %content
         
         con1 = [ii.rstrip() for ii in content if len(ii) > 1]
-        print "con1 => %s" %con1[0]
+        sprint("con1 => %s" %con1[0])
         con2 = [each[2:] for each in con1 if each[0] == 'v']
-        print "con2 => %s" %con2[0]
+        sprint("con2 => %s" %con2[0])
         con7 = [each.split() for each in con2]
-        print "con7 => %s" %con7[0]
+        sprint("con7 => %s" %con7[0])
         con8 = [[float(X) for X in each] for each in con7]
-        print "con8 => %s" %con8[0]
+        sprint("con8 => %s" %con8[0])
         
         l = np.asarray(con8)
         return l
@@ -60,13 +61,10 @@ def nnsearch(a, b):
         g.append((m, i))
     return g
 
-
-l = []
-#f = glob.glob('data/p2_c56_BenH.obj_R20/*')
 var = ThreeDObject('cell', 'cellbody.obj')
 var.setList('cellbody.obj')
 
-print "var.getName() => %s" %var.getName()
+rprint("var.getName() => %s" %var.getName())
 
 """k = f[0]
 h = f[1]
