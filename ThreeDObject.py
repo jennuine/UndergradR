@@ -28,13 +28,13 @@ class ThreeDObject:
         #cyan(content)
 
         con1 = [ii.rstrip() for ii in content if len(ii) > 1]
-        sprint("con1 => %s" %con1[0])
+        #sprint("con1 => %s" %con1[0])
         con2 = [each[2:] for each in con1 if each[0] == 'v']
-        sprint("con2 => %s" %con2[0])
+        #sprint("con2 => %s" %con2[0])
         con7 = [each.split() for each in con2]
-        sprint("con7 => %s" %con7[0])
+        #sprint("con7 => %s" %con7[0])
         con8 = [[float(X) for X in each] for each in con7]
-        sprint("con8 => %s" %con8[0])
+        #sprint("con8 => %s" %con8[0])
         
         l = np.asarray(con8)
         #cyan(l)

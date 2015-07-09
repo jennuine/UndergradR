@@ -45,7 +45,7 @@ def store(args):
     for path in args[1:]:
         obj = ThreeDObject(path.rstrip('.obj'), path)
         objs.append(obj)
-        rprint("obj => %s" %obj)
+        #rprint("obj => %s" %obj)
     return np.asarray(objs)
 
 def show_progress(index, end_val, bar_length):
@@ -76,9 +76,25 @@ def radix_sort(arr):
                 del bucket[:]
     return arr
 
+global minDistList
+minDistList = []
+
+def compareAll(objs):
+    for i1, element in enumerate(objs):
+        count = 0;
+        if (i1 + 1) < len(objs):
+            for i2, element2 in enumerate(objs[i1 + 1:]):
+                if count == 0: sprint("Comparing %s vs %s" %(str(element) ,str(element2)))
+                count += 1
+                answer = nnsearch(element.getList(), element2.getList())
+                minDistList.append(answer)
+        text = "%s_vs_%s" %(str(a), str(b))
+        pickle.dump(g, open(text, "w"))
 objs = store(sys.argv)
 
+compareAll(objs)
 
+"""
 #cyan(objs)
 
 obj1 = objs[0].getList()
@@ -94,4 +110,4 @@ pickle.dump(answer, open("saved_data", "w"))
 cyan(answer)
 
 rprint(radix_sort(answer))
-
+"""
