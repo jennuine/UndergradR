@@ -5,8 +5,9 @@ import numpy as np
 import operator
 import sys
 from termcolor import cprint
-import scipy.spatial.distance as scipy
+from progress import ProgressBar
 #import ThreeDObject
+import time
 
 sprint = lambda x : cprint('\t' + x, 'magenta')#, attrs=['bold'])
 rprint = lambda x : cprint('\t\t' + x, 'red')
@@ -59,18 +60,21 @@ def euclidianD(p1, p2):
     x2, y2, z2 = p2
     return math.sqrt((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2)
 
-
 def nnsearch(a, b):
     """
     Returns an matrix of shortest paths from a and b
     """
-    g = []
-    for ii in a:
+    g = []   
+
+    for index, ii in enumerate(a):
         l = []
         for number, jj in enumerate(b):
             l.append(euclidianD(ii, jj))
         (m, i) = min((v, i) for i, v in enumerate(l))
         g.append((m, i))
+        #rprint(str(index))
+        show_progress(index, len(a), 20)
+        sys.stdout.flush()
     return g
 
 def store(args):
@@ -85,14 +89,29 @@ def store(args):
         rprint("obj => %s" %obj)
     return np.asarray(objs)
 
+def show_progress(index, end_val, bar_length):
+    """
+    Displays the progress of the process running
+    """
+    percent = float(index) / end_val
+    hashes = '#' * int(round(percent * bar_length))
+    spaces = ' ' * (bar_length - len(hashes))
+    text = "\bPercent: [{0}] {1}%".format(hashes + spaces, int(round(percent * 100)))
+    sys.stdout.write("\r {:<70}".format(text))
+    sys.stdout.flush()
+
+
 objs = store(sys.argv)
+
 
 #cyan(objs)
 
 obj1 = objs[0].getList()
 obj2 = objs[1].getList()
 
-answer = obj1.
-print answer
+#show_progress(100, obj1, obj2)
+answer = nnsearch(obj1, obj2)
+
+#print answer
 cyan(answer)
 
