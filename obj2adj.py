@@ -1,56 +1,15 @@
-import glob
 import os
 import math
 import numpy as np
 import operator
 import sys
 from termcolor import cprint
-from progress import ProgressBar
-#import ThreeDObject
-import time
+from ThreeDObject import ThreeDObject
+import pickle
 
 sprint = lambda x : cprint('\t' + x, 'magenta')#, attrs=['bold'])
 rprint = lambda x : cprint('\t\t' + x, 'red')
 cyan = lambda x: cprint(x, 'cyan')
-
-class ThreeDObject:
-
-    def __init__(self, name, filepath):
-        """
-        Constructor: creates new ThreeDObject
-        """
-        self.name = name
-        self.filepath = filepath
-        self.list = self.extractOBJ(filepath)
-
-    def __str__(self): return self.name
-    def __repr__(self): return str(self.list)
-
-    def extractOBJ(self, filepath):
-        """
-        Returns an array containing (x, y, z) coordinates for the .obj vertices
-        """
-        with open(filepath) as f:
-            content = f.readlines()
-        
-        #cyan(content)
-
-        con1 = [ii.rstrip() for ii in content if len(ii) > 1]
-        sprint("con1 => %s" %con1[0])
-        con2 = [each[2:] for each in con1 if each[0] == 'v']
-        sprint("con2 => %s" %con2[0])
-        con7 = [each.split() for each in con2]
-        sprint("con7 => %s" %con7[0])
-        con8 = [[float(X) for X in each] for each in con7]
-        sprint("con8 => %s" %con8[0])
-        
-        l = np.asarray(con8)
-        #cyan(l)
-        return l
-
-    def getName(self): return self.name
-    def getList(self): return self.list
-
 
 def euclidianD(p1, p2):
     """
@@ -96,10 +55,26 @@ def show_progress(index, end_val, bar_length):
     percent = float(index) / end_val
     hashes = '#' * int(round(percent * bar_length))
     spaces = ' ' * (bar_length - len(hashes))
-    text = "\bPercent: [{0}] {1}%".format(hashes + spaces, int(round(percent * 100)))
+    text = "\bProcess: [{0}] {1}%".format(hashes + spaces, int(round(percent * 100)))
     sys.stdout.write("\r {:<70}".format(text))
     sys.stdout.flush()
 
+def radix_sort(arr):
+    max = -1
+    for row in arr[0:]:
+        num = int(math.log10(row)) + 1
+        if num > max:
+            max = num
+
+    buckets = [[] for i in range(0, 10)] #buckets for each digit
+    for digit in range(0, max):
+        for number in arr[0:]:
+            buckets[number / 10**digit % 10].append(number)
+            del arr[:]
+            for buckets in buckets:
+                array.extend(buckets)
+                del bucket[:]
+    return arr
 
 objs = store(sys.argv)
 
@@ -109,9 +84,14 @@ objs = store(sys.argv)
 obj1 = objs[0].getList()
 obj2 = objs[1].getList()
 
-#show_progress(100, obj1, obj2)
 answer = nnsearch(obj1, obj2)
 
-#print answer
+#np.save("data.npy", answer)
+
+pickle.dump(answer, open("saved_data", "w"))
+
+
 cyan(answer)
+
+rprint(radix_sort(answer))
 
