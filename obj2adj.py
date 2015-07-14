@@ -29,9 +29,12 @@ def nnsearch(a, b):
         l = []
         for number, jj in enumerate(b):
             l.append(euclidianD(ii, jj))
+        
         (m, i) = min((v, i) for i, v in enumerate(l))
         g.append((m, i))
-        #rprint(str(index))
+
+        if m < 50: minDistList.append((m, i))
+        
         show_progress(index, len(a), 20)
     return g
 
@@ -75,8 +78,14 @@ def radix_sort(arr):
                 del bucket[:]
     return arr
 
+global dict
+dict = {}
+
 global minDistList
 minDistList = []
+
+global nnSearchList
+nnSearchList = []
 
 def compareAll(objs):
     """
@@ -84,19 +93,18 @@ def compareAll(objs):
     """
     for i1, element in enumerate(objs):
         if (i1 + 1) < len(objs):
-            count = 0
+
             for i2, element2 in enumerate(objs[i1 + 1:]):
                 sprint('Comparing %s vs %s' %(str(element), str(element2)))
-                count = count + 1
                 answer = nnsearch(element.getList(), element2.getList())
                 print "\n"
-                minDistList.append(answer)
+                nnSearchList.append(answer)
                 a = element
                 b = element2
         
-        text = "%s_vs_%s" %(str(a), str(b))
-        pickle.dump(answer, open(text, "w"))
-
+                text = "%s_vs_%s" %(str(a), str(b))
+                pickle.dump(answer, open(text, "w"))
+                dict[str(a) + '->' + str(b)] = (nnSearchList, minDistList)
 
 
 """******************************************************************"""
@@ -105,6 +113,8 @@ def compareAll(objs):
 objs = store(sys.argv)
 
 compareAll(objs)
+
+cyan(dict.keys())
 
 """
 #cyan(objs)
