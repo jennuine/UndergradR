@@ -7,7 +7,7 @@ from termcolor import cprint, colored
 from ThreeDObject import ThreeDObject
 import pickle
 
-sprint = lambda x : cprint('\t' + x, 'magenta')#, attrs=['bold'])
+sprint = lambda x : cprint('\t' + x, 'magenta')
 rprint = lambda x : cprint('\t\t' + x, 'red')
 cyan = lambda x: cprint(x, 'cyan')
 
